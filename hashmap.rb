@@ -33,7 +33,15 @@ class HashMap
       tmp = tmp.next
       end
     end
-    @buckets[value % @buckets.length].head = Node.new(key, value)
+    if @buckets[value % @buckets.length].head == nil
+      @buckets[value % @buckets.length].head = Node.new(key, value)
+    else
+      tmp = @buckets[value % @buckets.length].head
+      until tmp.next == nil
+        tmp = tmp.next
+      end
+      tmp.next = Node.new(key, value)
+    end
   end
 
   def get(key)
@@ -60,6 +68,88 @@ class HashMap
     false
   end
 
+  def remove(key)
+    buckets.each do
+      |bucket|
+      tmp = bucket.head
+      tmp_previous = bucket.head
+      #binding.pry
+      until tmp == nil
+        if tmp.string == key && tmp.next != nil
+          tmp_previous.next = tmp.next
+          tmp = nil
+          return '12345' 
+        elsif tmp.string == key && tmp.next == nil
+          tmp_previous.next = nil
+          tmp = nil
+          return '67890'
+        end
+        tmp_previous = tmp
+        tmp = tmp.next
+        end
+      end
+      nil
+    end
+
+    def length
+      length = 0
+      buckets.each do
+        |bucket|
+        tmp = bucket.head
+        until tmp == nil
+          tmp = tmp.next
+          length += 1
+        end
+    end
+    length
+  end
+
+  def clear
+    buckets.each do
+      |bucket|
+      bucket.head = nil
+    end
+    buckets
+  end
+
+  def keys
+    keys = []
+    buckets.each do
+      |bucket|
+      tmp = bucket.head
+      until tmp == nil
+      keys.append(tmp.string) if tmp.string != nil
+      tmp = tmp.next
+      end
+    end
+    keys
+  end
+
+  def values
+    values = []
+    buckets.each do
+      |bucket|
+      tmp = bucket.head
+      until tmp == nil
+      values.append(tmp.hash_code) if tmp.hash_code != nil
+      tmp = tmp.next
+      end
+    end
+    values
+  end
+
+  def entries
+    entries = []
+    buckets.each do
+      |bucket|
+      tmp = bucket.head
+      until tmp == nil
+      entries.append([tmp.string, tmp.hash_code]) if tmp.hash_code != nil && tmp.string != nil
+      tmp = tmp.next
+      end
+    end
+    entries
+  end
 end
 
 
@@ -87,7 +177,12 @@ hash_map = HashMap.new()
 hash_map.hash("Hello")
 hash_map.set("Hello", 10002000)
 hash_map.set("Bye-bye", 30004000)
+hash_map.set("Yoyoyo", 30004000)
+hash_map.set("Oioioi", 30004000)
+
+
 
 p hash_map.buckets
-
-
+p hash_map.length
+p hash_map.values
+p hash_map.entries
