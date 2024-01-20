@@ -27,9 +27,9 @@ class HashMap
   def set(key, value)
     @buckets.each do
       |bucket|
-      tmp = bucket
-      until tmp.next == nil
-      return tmp.hash_code = value if tmp.key == key
+      tmp = bucket.head
+      until tmp == nil
+      return tmp.hash_code = value if tmp.string == key
       tmp = tmp.next
       end
     end
@@ -170,19 +170,3 @@ class LinkedList
     @head = nil
   end
 end
-
-
-
-hash_map = HashMap.new()
-hash_map.hash("Hello")
-hash_map.set("Hello", 10002000)
-hash_map.set("Bye-bye", 30004000)
-hash_map.set("Yoyoyo", 30004000)
-hash_map.set("Oioioi", 30004000)
-
-
-
-p hash_map.buckets
-p hash_map.length
-p hash_map.values
-p hash_map.entries
